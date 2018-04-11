@@ -32,9 +32,10 @@ export class DataResolver implements Resolve<any> {
    * @param {RouterStateSnapshot} state
    * @returns {Observable<any> | Promise<any> | any}
    */
-  // resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     // const realms = this.bnetService.loadRealms();
     // return forkJoin([realms]);
-  // }
+    return true;
+  }
 
 }
