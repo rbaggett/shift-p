@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+import {Router} from '@angular/router';
 
 import {BnetService} from '../../shared/services';
-import {Realm} from '../../shared/models';
+import {CharacterAvatar, Realm} from '../../shared/models';
 
 @Component({
   selector: 'app-header',
@@ -11,26 +14,30 @@ import {Realm} from '../../shared/models';
 })
 export class HeaderComponent implements OnInit {
 
+  @ViewChild('formDirective') formDirective: FormGroupDirective;
+
+  public avatar = new CharacterAvatar();
   public formGroup: FormGroup;
-  public selectedRegion: string;
-  public seletedRealm: Realm;
+  public realm: FormControl;
+  public region: FormControl;
+  public name: FormControl;
+
   public realms: Realm[] = [];
+  public filteredRealms: Observable<Realm[]>;
+
 
   // ---------------------------------------------------
   // INITIALIZE
   // ---------------------------------------------------
 
   constructor(private bnetService: BnetService,
-              private formBuilder: FormBuilder) {
+              private router: Router) {
   }
 
 
   ngOnInit() {
-    this.formGroup = this.formBuilder.group({
-      realm: [null, Validators.required],
-      region: [null, Validators.required],
-      name: [null, Validators.required]
-    });
+    this.buildForm();
+    this.changeRegion();
   }
 
 
@@ -42,8 +49,54 @@ export class HeaderComponent implements OnInit {
   /**
    *
    */
+  private buildForm(): void {
+    this.buildFormControls();
+    this.buildFormGroup();
+    this.buildFormSubscriptions();
+  }
+
+
+  /**
+   *
+   */
+  private buildFormControls(): void {
+    this.realm = new FormControl(null, Validators.required);
+    this.region = new FormControl('US', Validators.required);
+    this.name = new FormControl(null, Validators.required);
+  }
+
+  /**
+   *
+   */
+  private buildFormGroup(): void {
+    this.formGroup = new FormGroup({
+      realm: this.realm,
+      region: this.region,
+      name: this.name
+    });
+  }
+
+  /**
+   *
+   */
+  private buildFormSubscriptions(): void {
+    this.filteredRealms = this.realm.valueChanges
+      .startWith('')
+      .map(search => search ? this.filterRealms(search) : this.realms.slice());
+  }
+
+
+  /**
+   *
+   */
   public changeRegion(): void {
-    this.bnetService.loadRealms(this.formGroup.controls['region'].value)
+    // reset form
+    this.realm.reset();
+    this.name.reset();
+    // set the region
+    this.bnetService.setRegion(this.region.value);
+    // fetch region-realms
+    this.bnetService.loadRealms()
       .subscribe(
         (realms: Realm[]) => this.realms = realms,
         (error: any) => console.dir(error)
@@ -53,8 +106,47 @@ export class HeaderComponent implements OnInit {
 
   /**
    *
+   * @param {string} search
+   * @returns {Realm[]}
+   */
+  private filterRealms(search: string) {
+    return this.realms.filter(realm =>
+      realm.name.toLowerCase().indexOf(search.toLowerCase()) === 0
+    );
+  }
+
+
+  /**
+   *
+   */
+  private resetForm(): void {
+    this.formDirective.resetForm();
+    this.region.setValue(this.bnetService.region);
+  }
+
+
+  /**
+   *
+   */
+  private setAvatar(): void {
+    const character = this.bnetService.character;
+    this.avatar.name = character.name;
+    this.avatar.realm = character.realm;
+    this.avatar.region = this.bnetService.region;
+    this.avatar.url = `http://render-us.worldofwarcraft.com/character/${character.thumbnail}`;
+  }
+
+
+  /**
+   *
    */
   public submitSearch(): void {
-
+    const character = this.bnetService.loadCharacter(this.name.value, this.realm.value);
+    const pets = this.bnetService.loadPets();
+    forkJoin([character, pets]).subscribe(
+      () => this.setAvatar(),
+      (error) => console.dir(error),
+      () => this.resetForm()
+    );
   }
 }

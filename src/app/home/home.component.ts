@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {BnetService} from '../shared/services';
-import {Realm} from '../shared/models';
+// import {BnetService} from '../shared/services';
+// import {Realm} from '../shared/models';
 
 @Component({
   selector: 'app-home',
@@ -10,16 +10,17 @@ import {Realm} from '../shared/models';
 })
 export class HomeComponent implements OnInit {
 
-  public region: string;
-  public realm: Realm;
-  public realms: Realm[] = [];
+  // public region: string;
+  // public realm: Realm;
+  // public realms: Realm[] = [];
 
 
   // ---------------------------------------------------
   // INITIALIZE
   // ---------------------------------------------------
 
-  constructor(private bnetService: BnetService) {
+  constructor(// private bnetService: BnetService
+  ) {
   }
 
 
@@ -33,13 +34,13 @@ export class HomeComponent implements OnInit {
   // --------------------------------------------------
 
 
-  public changeRegion(): void {
-    this.bnetService.loadRealms(this.region)
-      .subscribe(
-        (realms: Realm[]) => this.realms = realms,
-        (error: any) => console.dir(error)
-      );
-  }
+  // public changeRegion(): void {
+  //   this.bnetService.loadRealms()
+  //     .subscribe(
+  //       (realms: Realm[]) => this.realms = realms,
+  //       (error: any) => console.dir(error)
+  //     );
+  // }
 
 
 }

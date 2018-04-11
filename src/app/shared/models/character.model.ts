@@ -17,6 +17,13 @@ export class Character {
   totalHonorableKills: number;
 }
 
+export class CharacterAvatar {
+  name: string;
+  realm: string;
+  region: string;
+  url: string;
+}
+
 export class CharacterPet {
   battlePetGuid: string;
   canBattle: boolean;

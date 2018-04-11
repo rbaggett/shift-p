@@ -12,18 +12,13 @@ export class DataResolver implements Resolve<any> {
   // INITIALIZE
   // ---------------------------------------------------
 
-  constructor(
-    private bnetService: BnetService
-  ) {}
-
-
+  constructor(private bnetService: BnetService) {
+  }
 
 
   // ---------------------------------------------------
   // FUNCTIONS
   // ---------------------------------------------------
-
-
 
 
   /**
@@ -33,8 +28,8 @@ export class DataResolver implements Resolve<any> {
    * @returns {Observable<any> | Promise<any> | any}
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    // const realms = this.bnetService.loadRealms();
-    // return forkJoin([realms]);
+    // const pets = this.bnetService.loadPets();
+    // return forkJoin([pets]);
     return true;
   }
 

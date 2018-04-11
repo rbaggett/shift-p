@@ -1,10 +1,14 @@
 <mat-toolbar class="toolbar-container">
   <mat-toolbar-row>
-    <div class="toolbar-inputs-container">
+    <div class="header-left">
+      <img src="../../../assets/images/shift_p.svg">
+    </div>
+    <div class="header-middle">
 
-      <form [formGroup]="formGroup" (ngSubmit)="submitSearch()">
+      <form [formGroup]="formGroup" autocomplete="off" #formDirective="ngForm"
+            (ngSubmit)="submitSearch(formDirective)">
         <!-- REGION -->
-        <mat-form-field>
+        <mat-form-field class="field-region">
           <mat-select placeholder="Region" formControlName="region"
                       (change)="changeRegion()">
             <mat-option value="US"> US</mat-option>
@@ -13,12 +17,13 @@
         </mat-form-field>
 
         <!-- REALM -->
-        <mat-form-field class="toolbar-input-spacer">
-          <mat-select placeholder="Realm" formControlName="realm">
-            <mat-option *ngFor="let r of realms" [value]="r">
-              {{r.name}}
+        <mat-form-field class="toolbar-input-spacer field-realm">
+          <input matInput placeholder="Realm" aria-label="Realm" [matAutocomplete]="auto" formControlName="realm">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let realm of filteredRealms | async" [value]="realm.name">
+              {{realm.name}}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
 
         <!-- NAME -->
@@ -28,12 +33,15 @@
 
         <!-- SUBMIT -->
         <div class="toolbar-input-spacer toolbar-submit-button">
-          <button mat-raised-button type="submit" [disabled]="formGroup.invalid">
+          <button mat-raised-button type="submit" color="primary" [disabled]="formGroup.invalid">
             Search
           </button>
         </div>
       </form>
 
+    </div>
+    <div class="header-right">
+      <img [src]="avatar.url" *ngIf="avatar.url">
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

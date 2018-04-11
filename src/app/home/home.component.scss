@@ -1,16 +1,8 @@
 .home-container {
   display: flex;
   align-items: center;
+  flex-direction: column;
   height: 50%;
   justify-content: center;
 }
 
-.home-content {
-  width:auto;
-}
-
-.logo {
-  height: 25px;
-  margin-bottom: -2px;
-  width: 90px;
-}

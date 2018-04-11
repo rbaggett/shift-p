@@ -8,9 +8,13 @@ import {environment} from '../../../environments/environment';
 @Injectable()
 export class BnetService {
 
+  private key = environment.bnetServiceKey;
+  private url = environment.bnetServiceUrl;
+
   public character: Character = new Character();
   public pets: Pet[] = [];
-  // public realms: Realm[] = [];
+  public mounts = [];
+  public region: string;
 
   // ---------------------------------------------------
   // INITIALIZE
@@ -26,27 +30,46 @@ export class BnetService {
   // --------------------------------------------------
 
 
+  public loadCharacter(character: string, realm: string): Observable<boolean> {
+    const url = `https://${this.region}.${this.url}character/${realm}/${character}?fields=pets,mounts&apikey=${this.key}`;
+    return <Observable<boolean>>this.http
+      .get(url)
+      .do((response: any) => {
+        this.character = response;
+        console.dir(response);
+      });
+  }
+
+
+  public loadMounts(): Observable<boolean> {
+    return Observable.of(true);
+  }
+
+
+  public loadPets(): Observable<boolean> {
+    const url = `https://${this.region}.${this.url}pet/?fields=species&apikey=${this.key}`;
+    return <Observable<boolean>>this.http
+      .get(url)
+      .do((response: any) => {
+        this.pets = response;
+        console.dir(response);
+      });
+  }
+
+
   /**
    *
    * @returns {Observable<boolean>}
    */
-  public loadRealms(region: string): Observable<any> {
-    // if (this.realms.length) {
-    //   return Observable.of(true);
-    // } else {
-      return <Observable<boolean>>this.http
-        .get(`https://${region}.${environment.bnetServiceUrl}realm/status?&apikey=${environment.bnetServiceKey}`)
-        .map((response: any) => response.realms);
-    // }
+  public loadRealms(): Observable<any> {
+    const url = `https://${this.region}.${this.url}realm/status?&apikey=${this.key}`;
+    return <Observable<boolean>>this.http
+      .get(url)
+      .map((response: any) => response.realms);
   }
 
 
-  // /**
-  //  *
-  //  * @param {Realm[]} realms
-  //  */
-  // private setRealms(realms: Realm[]): void {
-  //   this.realms.length = 0;
-  //   this.realms = this.realms.concat(realms);
-  // }
+  public setRegion(region: string): void {
+    this.region = region;
+  }
 }
