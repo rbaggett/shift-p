@@ -1,0 +1,41 @@
+<mat-toolbar class="toolbar-container">
+  <mat-toolbar-row>
+    <div class="toolbar-inputs-container">
+
+      <form [formGroup]="formGroup" (ngSubmit)="submitSearch()">
+        <!-- REGION -->
+        <mat-form-field>
+          <mat-select placeholder="Region" formControlName="region"
+                      (change)="changeRegion()">
+            <mat-option value="US"> US</mat-option>
+            <mat-option value="EU"> EU</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- REALM -->
+        <mat-form-field class="toolbar-input-spacer">
+          <mat-select placeholder="Realm" formControlName="realm">
+            <mat-option *ngFor="let r of realms" [value]="r">
+              {{r.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- NAME -->
+        <mat-form-field class="toolbar-input-spacer">
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+
+        <!-- SUBMIT -->
+        <div class="toolbar-input-spacer toolbar-submit-button">
+          <button mat-raised-button type="submit" [disabled]="formGroup.invalid">
+            Search
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
