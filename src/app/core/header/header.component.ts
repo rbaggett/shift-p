@@ -33,8 +33,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private bnetService: BnetService,
     private router: Router
-  ) {
-  }
+  ) { }
 
 
 
@@ -109,7 +108,6 @@ export class HeaderComponent implements OnInit {
     // reset form
     this.realm.reset();
     this.name.reset();
-    // this.bnetService.setRegion(this.region.value);
 
     // fetch region-realms
     this.bnetService.loadRealms(this.region.value)
@@ -118,19 +116,6 @@ export class HeaderComponent implements OnInit {
         (error: any) => console.dir(error)
       );
   }
-
-
-
-
-/*
-  /!**
-   *
-   *!/
-  private displayCharacter(): void {
-    this.setAvatar();
-    this.router.navigate(['/collections']);
-  }
-*/
 
 
 
@@ -161,38 +146,16 @@ export class HeaderComponent implements OnInit {
 
 
 
-/*
-  /!**
-   *
-   *!/
-  private setAvatar(): void {
-    const character = this.bnetService.character;
-    this.avatar.name = character.name;
-    this.avatar.realm = character.realm;
-    this.avatar.region = this.bnetService.region;
-    this.avatar.url = `http://render-us.worldofwarcraft.com/character/${character.thumbnail}`;
-  }
-*/
-
-
-
-
   /**
    *
    */
   public submitSearch(): void {
-    const route = `/${this.region.value}/${this.realm.value}/${this.name.value}`;
+    const region = this.region.value.toLowerCase();
+    const realm = this.realm.value.toLowerCase();
+    const name = this.name.value.toLowerCase();
+    const route = `/${region}/${realm}/${name}`;
 
     this.resetForm();
     this.router.navigate([route]);
-/*
-    const character = this.bnetService.loadCharacter(this.name.value, this.realm.value);
-    const pets = this.bnetService.loadPets();
-    forkJoin([character, pets]).subscribe(
-      () => this.displayCharacter(),
-      (error) => console.dir(error),
-      () => this.resetForm()
-    );
-*/
   }
 }

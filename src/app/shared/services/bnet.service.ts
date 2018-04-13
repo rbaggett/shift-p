@@ -4,7 +4,6 @@ import {Observable} from 'rxjs/Observable';
 
 import {Character, Pet, Realm} from '../models';
 import {environment} from '../../../environments/environment';
-import {CharacterService} from './character.service';
 
 @Injectable()
 export class BnetService {
@@ -28,7 +27,6 @@ export class BnetService {
 
 
   constructor(
-    private characterService: CharacterService,
     private http: HttpClient
   ) { }
 
@@ -79,7 +77,7 @@ export class BnetService {
     const url = `https://${region}.${this.url}pet/?fields=species&apikey=${this.key}`;
     return <Observable<boolean>>this.http
       .get(url)
-      .do((response: any) => this.pets = response);
+      .do((response: any) => this.pets = response.pets);
   }
 
 

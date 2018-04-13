@@ -28,9 +28,9 @@ export class DataResolver implements Resolve<any> {
    * @returns {Observable<any> | Promise<any> | any}
    */
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    // const pets = this.bnetService.loadPets();
-    // return forkJoin([pets]);
-    return true;
+    const region = route.params['region'];
+
+    return this.bnetService.loadPets(region);
   }
 
 }

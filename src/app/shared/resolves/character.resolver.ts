@@ -3,7 +3,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
-import {BnetService} from '../services';
+import {BnetService, CharacterService} from '../services';
 
 @Injectable()
 export class CharacterResolver implements Resolve<any> {
@@ -13,7 +13,8 @@ export class CharacterResolver implements Resolve<any> {
   // ---------------------------------------------------
 
   constructor(
-    private bnetService: BnetService
+    private bnetService: BnetService,
+    private characterService: CharacterService
   ) { }
 
 
@@ -35,10 +36,11 @@ export class CharacterResolver implements Resolve<any> {
     const realm = route.params['realm'];
     const character = route.params['character'];
 
-    const character = this.bnetService.loadCharacter(region, realm, character);
-    const pets = this.bnetService.loadPets(region);
+    const characterLoad = this.bnetService.loadCharacter(region, realm, character);
+    const petLoad = this.bnetService.loadPets(region);
 
-    return forkJoin([character, pets]);
+    return forkJoin([characterLoad, petLoad])
+      .subscribe(() => this.characterService.mergePets());
   }
 
 }
