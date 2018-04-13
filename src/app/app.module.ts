@@ -5,6 +5,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
+import {CharacterModule} from './collections/character.module';
 import {CoreModule} from './core/core.module';
 import {HomeComponent} from './home/home.component';
 import {MaterialModule} from './shared/material.module';
@@ -20,6 +21,7 @@ import {SharedModule} from './shared/shared.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    CharacterModule,
     CoreModule,
     HttpClientModule,
     MaterialModule,

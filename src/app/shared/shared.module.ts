@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {BnetService} from './services';
-import {DataResolver} from './resolves';
+import {BnetService, CharacterService} from './services';
+import {CharacterResolver, DataResolver} from './resolves';
 
 @NgModule({
   imports: [
@@ -11,6 +11,8 @@ import {DataResolver} from './resolves';
   declarations: [],
   providers: [
     BnetService,
+    CharacterResolver,
+    CharacterService,
     DataResolver
   ]
 })

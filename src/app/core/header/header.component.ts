@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
@@ -30,15 +30,21 @@ export class HeaderComponent implements OnInit {
   // INITIALIZE
   // ---------------------------------------------------
 
-  constructor(private bnetService: BnetService,
-              private router: Router) {
+  constructor(
+    private bnetService: BnetService,
+    private router: Router
+  ) {
   }
+
+
 
 
   ngOnInit() {
     this.buildForm();
     this.changeRegion();
   }
+
+
 
 
   // ---------------------------------------------------
@@ -56,6 +62,8 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
@@ -64,6 +72,9 @@ export class HeaderComponent implements OnInit {
     this.region = new FormControl('US', Validators.required);
     this.name = new FormControl(null, Validators.required);
   }
+
+
+
 
   /**
    *
@@ -76,6 +87,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+
+
+
   /**
    *
    */
@@ -86,6 +100,8 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
@@ -93,15 +109,30 @@ export class HeaderComponent implements OnInit {
     // reset form
     this.realm.reset();
     this.name.reset();
-    // set the region
-    this.bnetService.setRegion(this.region.value);
+    // this.bnetService.setRegion(this.region.value);
+
     // fetch region-realms
-    this.bnetService.loadRealms()
+    this.bnetService.loadRealms(this.region.value)
       .subscribe(
         (realms: Realm[]) => this.realms = realms,
         (error: any) => console.dir(error)
       );
   }
+
+
+
+
+/*
+  /!**
+   *
+   *!/
+  private displayCharacter(): void {
+    this.setAvatar();
+    this.router.navigate(['/collections']);
+  }
+*/
+
+
 
 
   /**
@@ -116,18 +147,24 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
   private resetForm(): void {
+    const region = this.region.value;
     this.formDirective.resetForm();
-    this.region.setValue(this.bnetService.region);
+    this.region.setValue(region);
   }
 
 
-  /**
+
+
+/*
+  /!**
    *
-   */
+   *!/
   private setAvatar(): void {
     const character = this.bnetService.character;
     this.avatar.name = character.name;
@@ -135,18 +172,27 @@ export class HeaderComponent implements OnInit {
     this.avatar.region = this.bnetService.region;
     this.avatar.url = `http://render-us.worldofwarcraft.com/character/${character.thumbnail}`;
   }
+*/
+
+
 
 
   /**
    *
    */
   public submitSearch(): void {
+    const route = `/${this.region.value}/${this.realm.value}/${this.name.value}`;
+
+    this.resetForm();
+    this.router.navigate([route]);
+/*
     const character = this.bnetService.loadCharacter(this.name.value, this.realm.value);
     const pets = this.bnetService.loadPets();
     forkJoin([character, pets]).subscribe(
-      () => this.setAvatar(),
+      () => this.displayCharacter(),
       (error) => console.dir(error),
       () => this.resetForm()
     );
+*/
   }
 }

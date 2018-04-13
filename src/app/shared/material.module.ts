@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatSelectModule,
+  MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
 
@@ -13,6 +14,7 @@ import {
     MatInputModule,
     MatMenuModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule
   ],
   exports: [
@@ -22,6 +24,7 @@ import {
     MatInputModule,
     MatMenuModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule
   ],
   providers: []
