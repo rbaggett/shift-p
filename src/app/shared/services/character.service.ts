@@ -114,6 +114,7 @@ export class CharacterService {
       const collectedPets = _.filter(characterPets, {creatureId: masterPet.creatureId});
       let mergedPet = new MergedPet();
 
+      
       if (collectedPets.length) {
         collectedPets.forEach(collectedPet => {
           mergedPet = _.extend(mergedPet, collectedPet);
