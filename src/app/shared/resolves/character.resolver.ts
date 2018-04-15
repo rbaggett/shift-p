@@ -15,9 +15,8 @@ export class CharacterResolver implements Resolve<any> {
   constructor(
     private bnetService: BnetService,
     private characterService: CharacterService
-  ) { }
-
-
+  ) {
+  }
 
 
   // ---------------------------------------------------
@@ -36,11 +35,11 @@ export class CharacterResolver implements Resolve<any> {
     const realm = route.params['realm'];
     const character = route.params['character'];
 
-    const characterLoad = this.bnetService.loadCharacter(region, realm, character);
-    const petLoad = this.bnetService.loadPets(region);
-
-    return forkJoin([characterLoad, petLoad])
-      .subscribe(() => this.characterService.mergePets());
+   return this.bnetService.loadCharacter(region, realm, character)
+      .flatMap(() => this.bnetService.loadPets(region))
+      .flatMap(() => this.characterService.mergePets());
   }
+
+
 
 }

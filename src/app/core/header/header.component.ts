@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Router} from '@angular/router';
 
@@ -13,8 +12,6 @@ import {CharacterAvatar, Realm} from '../../shared/models';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  @ViewChild('formDirective') formDirective: FormGroupDirective;
 
   public avatar = new CharacterAvatar();
   public formGroup: FormGroup;
@@ -33,17 +30,14 @@ export class HeaderComponent implements OnInit {
   constructor(
     private bnetService: BnetService,
     private router: Router
-  ) { }
-
-
+  ) {
+  }
 
 
   ngOnInit() {
     this.buildForm();
     this.changeRegion();
   }
-
-
 
 
   // ---------------------------------------------------
@@ -61,18 +55,14 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
-
   /**
    *
    */
   private buildFormControls(): void {
-    this.realm = new FormControl(null, Validators.required);
-    this.region = new FormControl('US', Validators.required);
-    this.name = new FormControl(null, Validators.required);
+    this.realm = new FormControl(null);
+    this.region = new FormControl('US');
+    this.name = new FormControl(null);
   }
-
-
 
 
   /**
@@ -87,8 +77,6 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
-
   /**
    *
    */
@@ -99,25 +87,17 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
-
   /**
    *
    */
   public changeRegion(): void {
-    // reset form
-    this.realm.reset();
-    this.name.reset();
-
-    // fetch region-realms
+    this.resetForm();
     this.bnetService.loadRealms(this.region.value)
       .subscribe(
         (realms: Realm[]) => this.realms = realms,
         (error: any) => console.dir(error)
       );
   }
-
-
 
 
   /**
@@ -132,18 +112,14 @@ export class HeaderComponent implements OnInit {
   }
 
 
-
-
   /**
    *
    */
   private resetForm(): void {
-    const region = this.region.value;
-    this.formDirective.resetForm();
-    this.region.setValue(region);
+    this.realm.reset();
+    this.name.reset();
+    this.region.setValue(this.region.value);
   }
-
-
 
 
   /**

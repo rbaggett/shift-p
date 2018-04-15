@@ -1,22 +1,18 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
 import {Character, Pet, Realm} from '../models';
 import {environment} from '../../../environments/environment';
+import {Router} from "@angular/router";
 
 @Injectable()
 export class BnetService {
 
+  private SOURCE_CHARACTER = 'Character';
+
   private key = environment.bnetServiceKey;
   private url = environment.bnetServiceUrl;
-
-/*
-  public character: Character = new Character();
-  public pets: Pet[] = [];
-  public mounts = [];
-  public region: string;
-*/
 
   public character: Character = new Character();
   public pets: Pet[] = [];
@@ -27,15 +23,32 @@ export class BnetService {
 
 
   constructor(
-    private http: HttpClient
-  ) { }
-
-
+    private http: HttpClient,
+    private router: Router
+  ) {
+  }
 
 
   // ---------------------------------------------------
   // FUNCTIONS
   // --------------------------------------------------
+
+
+  /**
+   *
+   * @param {HttpErrorResponse} error
+   * @param {string} source
+   * @returns {Observable<any>}
+   */
+  private handleError(error: HttpErrorResponse, source: string): Observable<any> {
+
+    // 404 - not found
+    if (error.status && error.status === 404) {
+      this.router.navigate(['character-not-found']);
+      return Observable.throw(`${source} not found`);
+    }
+    return Observable.throw(error);
+  }
 
 
   /**
@@ -49,23 +62,20 @@ export class BnetService {
     const url = `https://${region}.${this.url}character/${realm}/${character}?fields=pets,mounts&apikey=${this.key}`;
     return <Observable<boolean>>this.http
       .get(url)
-      .do((response: Character) => this.character = response);
+      .do((response: Character) => this.character = response)
+      .catch((error: HttpErrorResponse) => this.handleError(error, this.SOURCE_CHARACTER));
   }
 
 
-
-
-/*
-  /!**
-   *
-   * @returns {Observable<boolean>}
-   *!/
-  public loadMounts(): Observable<boolean> {
-    return Observable.of(true);
-  }
-*/
-
-
+  /*
+    /!**
+     *
+     * @returns {Observable<boolean>}
+     *!/
+    public loadMounts(): Observable<boolean> {
+      return Observable.of(true);
+    }
+  */
 
 
   /**
@@ -81,8 +91,6 @@ export class BnetService {
   }
 
 
-
-
   /**
    *
    * @param {string} region
@@ -96,16 +104,14 @@ export class BnetService {
   }
 
 
-
-
-/*
-  /!**
-   *
-   * @param {string} region
-   *!/
-  public setRegion(region: string): void {
-    this.region = region;
-  }
-*/
+  /*
+    /!**
+     *
+     * @param {string} region
+     *!/
+    public setRegion(region: string): void {
+      this.region = region;
+    }
+  */
 
 }

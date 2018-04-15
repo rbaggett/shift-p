@@ -4,6 +4,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {CharacterComponent} from './collections/character.component';
 import {CharacterResolver} from './shared/resolves';
 import {HomeComponent} from './home/home.component';
+import {NotFoundComponent} from "./core/not-found/not-found.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,15 @@ const routes: Routes = [
     path: ':region/:realm/:character',
     component: CharacterComponent,
     resolve: {data: CharacterResolver}
+  },
+  {
+    path: 'character-not-found',
+    component: NotFoundComponent,
+    data: {source: 'Character'}
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];
 
