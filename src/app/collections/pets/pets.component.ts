@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+
+import {CharacterService} from "../../shared/services";
+import {MergedPet} from "../../shared/models";
 
 @Component({
   selector: 'app-pets',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PetsComponent implements OnInit {
 
-  constructor() { }
+  public pets: MergedPet[];
+
+  constructor(
+    private characterService: CharacterService
+  ) {
+  }
 
   ngOnInit() {
+    this.pets = this.characterService.mergedPets;
   }
 
 }

@@ -11,6 +11,7 @@ import {Character, CharacterPet, MergedPet, Pet} from '../models';
 export class CharacterService {
 
   public character: Character;
+  public mergedPets: MergedPet[] = [];
 
   // ---------------------------------------------------
   // INITIALIZE
@@ -19,9 +20,8 @@ export class CharacterService {
 
   constructor(
     private bnetService: BnetService
-  ) { }
-
-
+  ) {
+  }
 
 
   // ---------------------------------------------------
@@ -47,8 +47,6 @@ export class CharacterService {
     };
     return storePets[id] || null;
   }
-
-
 
 
   private getPetTcg(id): string {
@@ -82,8 +80,11 @@ export class CharacterService {
   }
 
 
-
-
+  /**
+   *
+   * @param quality
+   * @returns {string}
+   */
   private getPetTheme(quality): string {
     const theme = {
       4: 'primary',
@@ -92,8 +93,6 @@ export class CharacterService {
     };
     return theme[quality] || 'default';
   }
-
-
 
 
   /**
@@ -109,11 +108,13 @@ export class CharacterService {
     characterPets = characterPets.concat(this.bnetService.character.pets.collected);
     masterPets = masterPets.concat(this.bnetService.pets);
 
+
+
     masterPets.forEach(masterPet => {
 
       const collectedPets = _.filter(characterPets, {creatureId: masterPet.creatureId});
       let mergedPet = new MergedPet();
-
+      mergedPet = _.extend(mergedPet, masterPet);
 
       if (collectedPets.length) {
         collectedPets.forEach(collectedPet => {
@@ -132,14 +133,14 @@ export class CharacterService {
         mergedPet.tcg = this.getPetTcg(masterPet.creatureId);
         mergedPet.theme = this.getPetTheme(masterPet.qualityId);
       }
+      mergedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${mergedPet.family}.png`;
       mergedPets.push(mergedPet);
     });
-
+    this.mergedPets.length = 0;
+    this.mergedPets = this.mergedPets.concat(mergedPets);
     console.dir(mergedPets);
     return Observable.of(true);
   }
-
-
 
 
   /**

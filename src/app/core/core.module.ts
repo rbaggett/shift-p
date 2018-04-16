@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FooterComponent} from './footer/footer.component';
 import {HeaderComponent} from './header/header.component';
 import {MaterialModule} from '../shared/material.module';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {MaterialModule} from '../shared/material.module';
   ],
   declarations: [
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    NotFoundComponent
   ],
   exports: [
     FooterComponent,

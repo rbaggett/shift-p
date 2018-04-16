@@ -1,6 +1,12 @@
 import {NgModule} from '@angular/core';
 import {
-  MatAutocompleteModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatSelectModule,
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatInputModule,
+  MatMenuModule,
+  MatSelectModule,
   MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
@@ -11,6 +17,7 @@ import {
     MatAutocompleteModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatInputModule,
     MatMenuModule,
     MatSelectModule,
@@ -21,6 +28,7 @@ import {
     MatAutocompleteModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatInputModule,
     MatMenuModule,
     MatSelectModule,

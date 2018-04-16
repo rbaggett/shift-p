@@ -29,6 +29,7 @@ export class MergedPet {
   creatureName: string;
   duplicate: boolean;
   family: string;
+  familyImageUrl: string;
   icon: string;
   isFavorite: boolean;
   isFirstAbilitySlotSelected: boolean;
