@@ -1,14 +1,57 @@
+
+<button mat-raised-button (click)="backTen()">< 10</button>
+<button mat-raised-button (click)="forwardTen()">> 10</button>
+
 <br><br>
-<mat-grid-list cols="4" rowHeight="100px" gutterSize="15">
-  <mat-grid-tile class="pet-tile" *ngFor="let pet of pets">
+<mat-grid-list cols="4" rowHeight="140px" gutterSize="15px" style="margin: 8px;">
+  <mat-grid-tile class="pet-tile" *ngFor="let pet of visiblePets">
+    <mat-grid-tile-header class="mat-grid-tile-header header-{{pet.theme}}">
+      {{pet.creatureName}}
+    </mat-grid-tile-header>
+    <div class="pet-tile-container">
 
-      <div class="pet-tile-contents">
-        {{pet.creatureName}}
+      <div class="pet-tile-body">
+        <div class="pet-tile-column-icon">
+          <a [href]="pet.wowHeadUrl" target="_blank" title="view on wowhead.com">
+            <img [class]="pet.iconClass" [src]="pet.iconUrl">
+          </a>
+        </div>
+
+        <div class="pet-tile-column-stats">
+          <div>
+            <div class="battle-stat">
+              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Health.png"></span>
+              <span>&nbsp;{{pet.stats.health}}</span>
+            </div>
+            <div class="battle-stat">
+              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Attack.png"></span>
+              <span>&nbsp;{{pet.stats.power}}</span>
+            </div>
+            <div class="battle-stat">
+              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Speed.png"></span>
+              <span>&nbsp;{{pet.stats.speed}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pet-tile-column-breed">
+          <div class="level-label">level</div>
+          <div class="level-number">
+            <div>
+              <strong>{{pet.stats.level}}</strong>
+              <span>{{pet.breed.breed}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pet-family-image">
+          <img [src]="pet.familyImageUrl">
+        </div>
       </div>
 
-      <div class="pet-family-image">
-        <img [src]="pet.familyImageUrl">
-      </div>
-
+    </div>
+    <mat-grid-tile-footer>
+      <small *ngIf="pet.name !== pet.creatureName"><i>"{{pet.name}}"</i></small>
+    </mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>

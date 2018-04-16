@@ -4,7 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import * as _ from 'lodash';
 
 import {BnetService} from './bnet.service';
-import {Character, CharacterPet, MergedPet, Pet} from '../models';
+import {Character, CharacterPet, MergedPet, Pet, PetBreed} from '../models';
+import {environment} from "../../../environments/environment";
 
 
 @Injectable()
@@ -24,9 +25,40 @@ export class CharacterService {
   }
 
 
+
+
   // ---------------------------------------------------
   // FUNCTIONS
   // --------------------------------------------------
+
+
+  private getPetBreeds(id: number): PetBreed {
+    const breeds = {
+      4: {breed: 'P/P', gender: 'male'},
+      14: {breed: 'P/P', gender: 'female'},
+      5: {breed: 'S/S', gender: 'male'},
+      15: {breed: 'S/S', gender: 'female'},
+      6: {breed: 'H/H', gender: 'male'},
+      16: {breed: 'H/H', gender: 'female'},
+      7: {breed: 'H/P', gender: 'male'},
+      17: {breed: 'H/P', gender: 'female'},
+      8: {breed: 'P/S', gender: 'male'},
+      18: {breed: 'P/S', gender: 'female'},
+      9: {breed: 'H/S', gender: 'male'},
+      19: {breed: 'H/S', gender: 'female'},
+      10: {breed: 'P/B', gender: 'male'},
+      20: {breed: 'P/B', gender: 'female'},
+      11: {breed: 'S/B', gender: 'male'},
+      21: {breed: 'S/B', gender: 'female'},
+      12: {breed: 'H/B', gender: 'male'},
+      22: {breed: 'H/B', gender: 'female'},
+      3: {breed: 'B/B', gender: 'male'},
+      13: {breed: 'B/B', gender: 'female'}
+    };
+    return breeds[id] || null;
+  }
+
+
 
 
   private getPetStore(id): string {
@@ -47,6 +79,8 @@ export class CharacterService {
     };
     return storePets[id] || null;
   }
+
+
 
 
   private getPetTcg(id): string {
@@ -80,6 +114,8 @@ export class CharacterService {
   }
 
 
+
+
   /**
    *
    * @param quality
@@ -87,12 +123,14 @@ export class CharacterService {
    */
   private getPetTheme(quality): string {
     const theme = {
-      4: 'primary',
-      3: 'primary',
-      2: 'success'
+      4: 'rare',
+      3: 'rare',
+      2: 'uncommon'
     };
     return theme[quality] || 'default';
   }
+
+
 
 
   /**
@@ -101,30 +139,35 @@ export class CharacterService {
    */
   public mergePets(): Observable<boolean> {
 
-    let characterPets: CharacterPet[] = [];
-    let masterPets: Pet[] = [];
+    let characterPets: CharacterPet[] = Array.from(this.bnetService.character.pets.collected);
+    let masterPets: Pet[] = Array.from(this.bnetService.pets);
     let mergedPets: MergedPet[] = [];
 
-    characterPets = characterPets.concat(this.bnetService.character.pets.collected);
-    masterPets = masterPets.concat(this.bnetService.pets);
-
-
-
+    // loop through the master pet list
     masterPets.forEach(masterPet => {
 
-      const collectedPets = _.filter(characterPets, {creatureId: masterPet.creatureId});
-      let mergedPet = new MergedPet();
-      mergedPet = _.extend(mergedPet, masterPet);
+      // create a merged pet instance
+      let mergedPet = _.extend(new MergedPet(), masterPet);
+      mergedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${mergedPet.family}.png`;
 
-      if (collectedPets.length) {
-        collectedPets.forEach(collectedPet => {
-          mergedPet = _.extend(mergedPet, collectedPet);
-          mergedPet.collected = true;
-          mergedPet.duplicate = collectedPet.index > 0;
-          mergedPet.original = collectedPet.index === 0;
-          mergedPet.store = this.getPetStore(collectedPet.creatureId);
-          mergedPet.tcg = this.getPetTcg(collectedPet.creatureId);
-          mergedPet.theme = this.getPetTheme(collectedPet.qualityId);
+      // look for any matching pets in character collection
+      const matchingPets = _.filter(characterPets, {creatureId: masterPet.creatureId});
+
+      if (matchingPets.length) {
+        // create a collected pet for each match
+        matchingPets.forEach((matchingPet, index) => {
+          let collectedPet = Object.create(_.extend(mergedPet, matchingPet));
+          collectedPet.collected = true;
+          collectedPet.duplicate = index > 0;
+          collectedPet.original = index === 0;
+          collectedPet.store = this.getPetStore(matchingPet.creatureId);
+          collectedPet.tcg = this.getPetTcg(matchingPet.creatureId);
+          collectedPet.theme = this.getPetTheme(matchingPet.qualityId);
+          collectedPet.iconClass = `icon-${collectedPet.theme}`;
+          collectedPet.iconUrl = `${environment.blizzardIcon36}${collectedPet.icon}.jpg`;
+          collectedPet.wowHeadUrl = `${environment.wowHeadUrl}${collectedPet.creatureId}`;
+          collectedPet.breed = this.getPetBreeds(matchingPet.stats.breedId);
+          mergedPets.push(collectedPet);
         });
       } else {
         mergedPet.collected = false;
@@ -132,15 +175,20 @@ export class CharacterService {
         mergedPet.store = this.getPetStore(masterPet.creatureId);
         mergedPet.tcg = this.getPetTcg(masterPet.creatureId);
         mergedPet.theme = this.getPetTheme(masterPet.qualityId);
+        mergedPet.iconClass = `icon-${mergedPet.theme}`;
+        mergedPet.iconUrl = `${environment.blizzardIcon36}${mergedPet.icon}.jpg`;
+        mergedPet.wowHeadUrl = `${environment.wowHeadUrl}${mergedPet.creatureId}`;
+        mergedPet.breed = this.getPetBreeds(mergedPet.stats.breedId);
+        mergedPets.push(mergedPet);
       }
-      mergedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${mergedPet.family}.png`;
-      mergedPets.push(mergedPet);
     });
     this.mergedPets.length = 0;
-    this.mergedPets = this.mergedPets.concat(mergedPets);
-    console.dir(mergedPets);
+    this.mergedPets = Array.from(mergedPets);
+    this.mergedPets = _.sortBy(this.mergedPets, ['creatureName']);
     return Observable.of(true);
   }
+
+
 
 
   /**

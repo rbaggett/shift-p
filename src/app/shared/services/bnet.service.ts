@@ -25,8 +25,9 @@ export class BnetService {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {
-  }
+  ) { }
+
+
 
 
   // ---------------------------------------------------
@@ -51,6 +52,8 @@ export class BnetService {
   }
 
 
+
+
   /**
    *
    * @param region
@@ -65,6 +68,8 @@ export class BnetService {
       .do((response: Character) => this.character = response)
       .catch((error: HttpErrorResponse) => this.handleError(error, this.SOURCE_CHARACTER));
   }
+
+
 
 
   /*
@@ -91,6 +96,8 @@ export class BnetService {
   }
 
 
+
+
   /**
    *
    * @param {string} region
@@ -103,15 +110,5 @@ export class BnetService {
       .map((response: any) => response.realms);
   }
 
-
-  /*
-    /!**
-     *
-     * @param {string} region
-     *!/
-    public setRegion(region: string): void {
-      this.region = region;
-    }
-  */
 
 }

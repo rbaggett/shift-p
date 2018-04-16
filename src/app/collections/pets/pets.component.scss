@@ -1,21 +1,126 @@
+$theme-default: #777;
+$theme-uncommon: #5cb85c;
+$theme-rare: #337ab7;
+
+.battle-stat {
+  display: flex;
+}
+
+.mat-grid-tile-footer {
+  color: black !important;
+  height: 30px !important;
+  background-color: transparent !important;
+  justify-content: center !important;
+}
+
+.header {
+  height: 30px !important;
+}
+
+.header-default {
+  @extend .header;
+  background-color: $theme-default !important;
+}
+
+.header-rare {
+  @extend .header;
+  background-color: $theme-rare !important;
+}
+
+.header-uncommon {
+  @extend .header;
+  background-color: $theme-uncommon !important;
+}
+
+.icon {
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 50px;
+  margin-top: 5px;
+  padding: 2px;
+  width: 50px;
+}
+
+.icon-default {
+  @extend .icon;
+  background-color: $theme-default;
+}
+
+.icon-rare {
+  @extend .icon;
+  background-color: $theme-rare;
+}
+
+.icon-uncommon {
+  @extend .icon;
+  background-color: $theme-uncommon;
+}
+
+.level-label {
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.pet-family-image {
+  position: absolute;
+  right: -40px;
+  top: -10px;
+  opacity: 0.1;
+
+  img {
+    height: 175px;
+    width: 175px;
+  }
+}
+
+.pet-stat-image {
+  height: 18px;
+  width: 18px;
+}
+
 .pet-tile {
-  border-radius: 4px;
-  background-color: #f5f5f5;
+  box-shadow: 2px 2px 10px 0 rgba(112, 122, 133, 1);
 }
 
 .pet-tile:hover {
-  background-color: rgba(215, 215, 215, 0.5);
+  background-color: rgba(215, 215, 215, 0.2);
+}
+
+.pet-tile-column {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.pet-tile-column-breed {
+  @extend .pet-tile-column;
+  flex-direction: column;
+}
+
+.pet-tile-column-icon {
+  @extend .pet-tile-column;
+}
+
+.pet-tile-column-stats {
+  @extend .pet-tile-column;
+}
+
+.pet-tile-body {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.pet-tile-container {
+  border: 1px solid #d7d7d7;
+  //border-radius: 5px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 99%;
 }
 
 .pet-tile-contents {
   padding: 5px;
 }
 
-.pet-family-image {
-  height: 50px;
-  position: absolute;
-  right: 110px;
-  top: -70px;
-  width: 50px;
-  opacity: 0.15;
-}
+

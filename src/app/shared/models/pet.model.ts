@@ -11,6 +11,11 @@ export class Pet {
   weakAgainst: string[];
 }
 
+export class PetBreed {
+  breed: string;
+  gender: string;
+}
+
 export class PetStats {
   breedId: number;
   health: number;
@@ -23,6 +28,7 @@ export class PetStats {
 
 export class MergedPet {
   battlePetGuid: string;
+  breed: PetBreed;
   canBattle: boolean;
   collected: boolean;
   creatureId: number;
@@ -31,6 +37,8 @@ export class MergedPet {
   family: string;
   familyImageUrl: string;
   icon: string;
+  iconClass: string;
+  iconUrl: string;
   isFavorite: boolean;
   isFirstAbilitySlotSelected: boolean;
   isSecondAbilitySlotSelected: boolean;
@@ -47,4 +55,6 @@ export class MergedPet {
   theme: string;
   typeId: number;
   weakAgainst: string[];
+  wowHeadUrl: string;
 }
+
