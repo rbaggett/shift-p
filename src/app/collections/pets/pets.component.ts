@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {environment} from '../../../environments/environment';
 
 import {CharacterService} from "../../shared/services";
 import {MergedPet} from "../../shared/models";
@@ -11,8 +10,6 @@ import {MergedPet} from "../../shared/models";
 })
 export class PetsComponent implements OnInit {
 
-  public blizzIconUrl = environment.blizzardIcon36;
-  public wowHeadUrl = environment.wowHeadUrl;
   public pets: MergedPet[];
   public visiblePets: MergedPet[];
 

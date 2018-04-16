@@ -58,6 +58,17 @@ $theme-rare: #337ab7;
 
 .level-label {
   border-bottom: 1px solid #b3b3b3;
+  width: 75%;
+  justify-content: center;
+  display: flex;
+}
+
+.level-number {
+  display: flex;
+  width: 65%;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
 }
 
 .pet-family-image {

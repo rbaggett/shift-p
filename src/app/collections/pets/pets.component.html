@@ -1,8 +1,16 @@
-
-<button mat-raised-button (click)="backTen()">< 10</button>
-<button mat-raised-button (click)="forwardTen()">> 10</button>
-
-<br><br>
+<br>
+<div style="display:flex;justify-content: center;align-items:center;">
+  <div>
+    {{currentPage * pageSize}} - {{currentPage * pageSize + pageSize}} / {{pets.length}}
+  </div>
+  <button mat-icon-button (click)="backTen()">
+    <mat-icon>navigate_before</mat-icon>
+  </button>
+  <button mat-icon-button (click)="forwardTen()">
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+</div>
+<br>
 <mat-grid-list cols="4" rowHeight="140px" gutterSize="15px" style="margin: 8px;">
   <mat-grid-tile class="pet-tile" *ngFor="let pet of visiblePets">
     <mat-grid-tile-header class="mat-grid-tile-header header-{{pet.theme}}">
@@ -12,8 +20,8 @@
 
       <div class="pet-tile-body">
         <div class="pet-tile-column-icon">
-          <a [href]="pet.wowHeadUrl" target="_blank" title="view on wowhead.com">
-            <img [class]="pet.iconClass" [src]="pet.iconUrl">
+          <a [href]="pet.wowHeadUrl" target="_blank">
+            <img [class]="pet.iconClass" [src]="pet.iconUrl" matTooltip="view on wowhead.com">
           </a>
         </div>
 
@@ -37,10 +45,9 @@
         <div class="pet-tile-column-breed">
           <div class="level-label">level</div>
           <div class="level-number">
-            <div>
-              <strong>{{pet.stats.level}}</strong>
-              <span>{{pet.breed.breed}}</span>
-            </div>
+            <strong>{{pet.stats.level}}</strong>
+            <span style="font-size:15px;">{{pet.breed.breed}}</span>
+            <img src="../../../assets/images/pet/{{pet.breed.gender}}.png" style="width:15px;height:15px;">
           </div>
         </div>
 
