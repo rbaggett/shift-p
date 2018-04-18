@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
+import * as _ from 'lodash';
+
 import {CharacterService} from "../../shared/services";
 import {MergedPet} from "../../shared/models";
 
@@ -10,9 +12,10 @@ import {MergedPet} from "../../shared/models";
 })
 export class PetsComponent implements OnInit {
 
-  public pets: MergedPet[];
-  public visiblePets: MergedPet[];
+  private filterPets: MergedPet[];
+  private masterPets: MergedPet[];
 
+  public pagePets: MergedPet[];
   public pageSize = 20;
   public currentPage = 0;
 
@@ -29,8 +32,9 @@ export class PetsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.pets = this.characterService.mergedPets;
-    this.visiblePets = this.pets.slice(this.currentPage, this.pageSize);
+    this.masterPets = this.characterService.mergedPets;
+    this.filterPets = _.filter(this.masterPets, {original: true});
+    this.pagePets = this.filterPets.slice(this.currentPage, this.pageSize);
   }
 
 
@@ -51,14 +55,14 @@ export class PetsComponent implements OnInit {
 
     const petStart = this.currentPage * this.pageSize;
     const petEnd = petStart + this.pageSize;
-    this.visiblePets = this.pets.slice(petStart, petEnd);
+    this.pagePets = this.filterPets.slice(petStart, petEnd);
   }
 
 
 
 
   public forwardTen(): void {
-    if ((this.currentPage + 1) * this.pageSize > this.pets.length) {
+    if ((this.currentPage + 1) * this.pageSize > this.filterPets.length) {
       return;
     }
 
@@ -66,7 +70,18 @@ export class PetsComponent implements OnInit {
 
     const petStart = this.currentPage * this.pageSize;
     const petEnd = petStart + this.pageSize;
-    this.visiblePets = this.pets.slice(petStart, petEnd);
+    this.pagePets = this.filterPets.slice(petStart, petEnd);
+  }
+
+
+
+
+  /**
+   *
+   * @param event
+   */
+  public mouseScroll(event) {
+    (event.wheelDelta > 0) ? this.backTen() : this.forwardTen();
   }
 
 

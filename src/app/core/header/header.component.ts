@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Router} from '@angular/router';
@@ -34,10 +34,14 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   ngOnInit() {
     this.buildForm();
-    this.changeRegion();
+    this.loadRealms();
   }
+
+
 
 
   // ---------------------------------------------------
@@ -55,6 +59,8 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
@@ -63,6 +69,8 @@ export class HeaderComponent implements OnInit {
     this.region = new FormControl('US');
     this.name = new FormControl(null);
   }
+
+
 
 
   /**
@@ -77,6 +85,8 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
@@ -87,17 +97,17 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
   /**
    *
    */
   public changeRegion(): void {
     this.resetForm();
-    this.bnetService.loadRealms(this.region.value)
-      .subscribe(
-        (realms: Realm[]) => this.realms = realms,
-        (error: any) => console.dir(error)
-      );
+    this.loadRealms();
   }
+
+
 
 
   /**
@@ -112,6 +122,22 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
+
+  /**
+   *
+   */
+  private loadRealms(): void {
+    this.bnetService.loadRealms(this.region.value)
+      .subscribe(
+        (realms: Realm[]) => this.realms = realms,
+        (error: any) => console.dir(error)
+      );
+  }
+
+
+
+
   /**
    *
    */
@@ -120,6 +146,8 @@ export class HeaderComponent implements OnInit {
     this.name.reset();
     this.region.setValue(this.region.value);
   }
+
+
 
 
   /**

@@ -32,28 +32,33 @@ export class CharacterService {
   // --------------------------------------------------
 
 
+  /**
+   *
+   * @param {number} id
+   * @returns {PetBreed}
+   */
   private getPetBreeds(id: number): PetBreed {
     const breeds = {
-      4: {breed: 'P/P', gender: 'male'},
-      14: {breed: 'P/P', gender: 'female'},
-      5: {breed: 'S/S', gender: 'male'},
-      15: {breed: 'S/S', gender: 'female'},
-      6: {breed: 'H/H', gender: 'male'},
-      16: {breed: 'H/H', gender: 'female'},
-      7: {breed: 'H/P', gender: 'male'},
-      17: {breed: 'H/P', gender: 'female'},
-      8: {breed: 'P/S', gender: 'male'},
-      18: {breed: 'P/S', gender: 'female'},
-      9: {breed: 'H/S', gender: 'male'},
-      19: {breed: 'H/S', gender: 'female'},
-      10: {breed: 'P/B', gender: 'male'},
-      20: {breed: 'P/B', gender: 'female'},
-      11: {breed: 'S/B', gender: 'male'},
-      21: {breed: 'S/B', gender: 'female'},
-      12: {breed: 'H/B', gender: 'male'},
-      22: {breed: 'H/B', gender: 'female'},
       3: {breed: 'B/B', gender: 'male'},
-      13: {breed: 'B/B', gender: 'female'}
+      4: {breed: 'P/P', gender: 'male'},
+      5: {breed: 'S/S', gender: 'male'},
+      6: {breed: 'H/H', gender: 'male'},
+      7: {breed: 'H/P', gender: 'male'},
+      8: {breed: 'P/S', gender: 'male'},
+      9: {breed: 'H/S', gender: 'male'},
+      10: {breed: 'P/B', gender: 'male'},
+      11: {breed: 'S/B', gender: 'male'},
+      12: {breed: 'H/B', gender: 'male'},
+      13: {breed: 'B/B', gender: 'female'},
+      14: {breed: 'P/P', gender: 'female'},
+      15: {breed: 'S/S', gender: 'female'},
+      16: {breed: 'H/H', gender: 'female'},
+      17: {breed: 'H/P', gender: 'female'},
+      18: {breed: 'P/S', gender: 'female'},
+      19: {breed: 'H/S', gender: 'female'},
+      20: {breed: 'P/B', gender: 'female'},
+      21: {breed: 'S/B', gender: 'female'},
+      22: {breed: 'H/B', gender: 'female'}
     };
     return breeds[id] || null;
   }
@@ -61,6 +66,11 @@ export class CharacterService {
 
 
 
+  /**
+   *
+   * @param id
+   * @returns {string}
+   */
   private getPetStore(id): string {
     const storePets = {
       85283: 'brightpaw',
@@ -83,6 +93,11 @@ export class CharacterService {
 
 
 
+  /**
+   *
+   * @param id
+   * @returns {string}
+   */
   private getPetTcg(id): string {
     const tcgPets = {
       23234: 'banana_charm',
@@ -191,12 +206,6 @@ export class CharacterService {
 
 
 
-  /**
-   *
-   * @param {Character} character
-   */
-  public setCharacter(character: Character): void {
-    this.character = character;
-  }
+
 
 }

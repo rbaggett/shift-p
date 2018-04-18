@@ -11,8 +11,8 @@ export class BnetService {
 
   private SOURCE_CHARACTER = 'Character';
 
-  private key = environment.bnetServiceKey;
-  private url = environment.bnetServiceUrl;
+  private serviceKey = environment.bnetServiceKey;
+  private serviceUrl = environment.bnetServiceUrl;
 
   public character: Character = new Character();
   public pets: Pet[] = [];
@@ -62,7 +62,7 @@ export class BnetService {
    * @returns {Observable<boolean>}
    */
   public loadCharacter(region: string, realm: string, character: string): Observable<boolean> {
-    const url = `https://${region}.${this.url}character/${realm}/${character}?fields=pets,mounts&apikey=${this.key}`;
+    const url = `https://${region}.${this.serviceUrl}character/${realm}/${character}?fields=pets,mounts&apikey=${this.serviceKey}`;
     return <Observable<boolean>>this.http
       .get(url)
       .do((response: Character) => this.character = response)
@@ -89,7 +89,7 @@ export class BnetService {
    * @returns {Observable<boolean>}
    */
   public loadPets(region: string): Observable<boolean> {
-    const url = `https://${region}.${this.url}pet/?fields=species&apikey=${this.key}`;
+    const url = `https://${region}.${this.serviceUrl}pet/?fields=species&apikey=${this.serviceKey}`;
     return <Observable<boolean>>this.http
       .get(url)
       .do((response: any) => this.pets = response.pets);
@@ -104,7 +104,7 @@ export class BnetService {
    * @returns {Observable<any>}
    */
   public loadRealms(region: string): Observable<any> {
-    const url = `https://${region}.${this.url}realm/status?&apikey=${this.key}`;
+    const url = `https://${region}.${this.serviceUrl}realm/status?&apikey=${this.serviceKey}`;
     return <Observable<boolean>>this.http
       .get(url)
       .map((response: any) => response.realms);

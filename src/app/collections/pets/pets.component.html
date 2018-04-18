@@ -1,64 +1,72 @@
 <br>
 <div style="display:flex;justify-content: center;align-items:center;">
-  <div>
-    {{currentPage * pageSize}} - {{currentPage * pageSize + pageSize}} / {{pets.length}}
-  </div>
   <button mat-icon-button (click)="backTen()">
     <mat-icon>navigate_before</mat-icon>
   </button>
+  <div>
+    {{currentPage * pageSize}} - {{currentPage * pageSize + pageSize}} / {{filterPets.length}}
+  </div>
   <button mat-icon-button (click)="forwardTen()">
     <mat-icon>navigate_next</mat-icon>
   </button>
 </div>
+
 <br>
-<mat-grid-list cols="4" rowHeight="140px" gutterSize="15px" style="margin: 8px;">
-  <mat-grid-tile class="pet-tile" *ngFor="let pet of visiblePets">
-    <mat-grid-tile-header class="mat-grid-tile-header header-{{pet.theme}}">
-      {{pet.creatureName}}
-    </mat-grid-tile-header>
-    <div class="pet-tile-container">
+<!--<div appMouseWheel (mouseWheelUp)="backTen()" (mouseWheelDown)="forwardTen()">-->
+<div (mousewheel)="mouseScroll($event)">
+  <mat-grid-list cols="5" rowHeight="140px" gutterSize="15px" class="pet-grid">
+    <mat-grid-tile class="pet-tile" *ngFor="let pet of pagePets">
+      <mat-grid-tile-header class="mat-grid-tile-header header-{{pet.theme}}">
+        {{pet.creatureName}}
+      </mat-grid-tile-header>
+      <div class="pet-tile-container">
 
-      <div class="pet-tile-body">
-        <div class="pet-tile-column-icon">
-          <a [href]="pet.wowHeadUrl" target="_blank">
-            <img [class]="pet.iconClass" [src]="pet.iconUrl" matTooltip="view on wowhead.com">
-          </a>
-        </div>
+        <div class="pet-tile-body">
+          <div class="pet-tile-column-icon">
+            <a [href]="pet.wowHeadUrl" target="_blank">
+              <img [class]="pet.iconClass" [src]="pet.iconUrl" matTooltip="view on wowhead.com"
+                   onError="this.src='../../../assets/images/pet/image_not_found.png';">
+            </a>
+          </div>
 
-        <div class="pet-tile-column-stats">
-          <div>
-            <div class="battle-stat">
-              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Health.png"></span>
-              <span>&nbsp;{{pet.stats.health}}</span>
+          <div class="pet-tile-column-stats">
+            <div>
+              <div class="battle-stat">
+                <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Health.png"></span>
+                <span>&nbsp;{{pet.stats.health}}</span>
+              </div>
+              <div class="battle-stat">
+                <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Attack.png"></span>
+                <span>&nbsp;{{pet.stats.power}}</span>
+              </div>
+              <div class="battle-stat">
+                <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Speed.png"></span>
+                <span>&nbsp;{{pet.stats.speed}}</span>
+              </div>
             </div>
-            <div class="battle-stat">
-              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Attack.png"></span>
-              <span>&nbsp;{{pet.stats.power}}</span>
+          </div>
+
+          <div class="pet-tile-column-breed">
+            <div class="level-breed">
+              <strong>
+                <span>{{pet.stats.level}}</span>
+                <span>{{pet.breed.breed}}</span>
+              </strong>
             </div>
-            <div class="battle-stat">
-              <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Speed.png"></span>
-              <span>&nbsp;{{pet.stats.speed}}</span>
+            <div class="gender">
+              <img src="../../../assets/images/pet/{{pet.breed.gender}}.png" style="width:15px;height:15px;">
             </div>
+          </div>
+
+          <div class="pet-family-image">
+            <img [src]="pet.familyImageUrl">
           </div>
         </div>
 
-        <div class="pet-tile-column-breed">
-          <div class="level-label">level</div>
-          <div class="level-number">
-            <strong>{{pet.stats.level}}</strong>
-            <span style="font-size:15px;">{{pet.breed.breed}}</span>
-            <img src="../../../assets/images/pet/{{pet.breed.gender}}.png" style="width:15px;height:15px;">
-          </div>
-        </div>
-
-        <div class="pet-family-image">
-          <img [src]="pet.familyImageUrl">
-        </div>
       </div>
-
-    </div>
-    <mat-grid-tile-footer>
-      <small *ngIf="pet.name !== pet.creatureName"><i>"{{pet.name}}"</i></small>
-    </mat-grid-tile-footer>
-  </mat-grid-tile>
-</mat-grid-list>
+      <mat-grid-tile-footer>
+        <small *ngIf="pet.name !== pet.creatureName"><i>"{{pet.name}}"</i></small>
+      </mat-grid-tile-footer>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,5 +1,4 @@
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
@@ -30,7 +29,11 @@ export class DataResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     const region = route.params['region'];
 
-    return this.bnetService.loadPets(region);
+    // const pets = this.bnetService.loadPets(region);
+    // const realms = this.bnetService.loadRealms(region);
+
+    // return forkJoin([pets, realms]);
+    return this.bnetService.loadRealms(region);
   }
 
 }
