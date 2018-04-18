@@ -16,6 +16,7 @@ $theme-rare: #337ab7;
 .header {
   font-size: 11px !important;
   height: 30px !important;
+  justify-content: space-between;
 }
 
 .header-default {
@@ -35,7 +36,6 @@ $theme-rare: #337ab7;
 
 .icon {
   border: 1px solid black;
-  border-radius: 5px;
   height: 54px;
   margin-top: 5px;
   padding: 2px;
@@ -56,13 +56,6 @@ $theme-rare: #337ab7;
   @extend .icon;
   background-color: $theme-uncommon;
 }
-
-//.level-label {
-//  border-bottom: 1px solid #b3b3b3;
-//  width: 75%;
-//  justify-content: center;
-//  display: flex;
-//}
 
 .gender {
   border-top: 1px solid #b3b3b3;
