@@ -7,10 +7,17 @@ $theme-rare: #337ab7;
 }
 
 .mat-grid-tile-footer {
+  border-top: 1px solid rgba(0, 0, 0, .25);
   color: black !important;
   height: 30px !important;
   background-color: transparent !important;
   justify-content: center !important;
+  padding: 0 !important;
+}
+
+.footer-details {
+  left: 0;
+  position: absolute;
 }
 
 .header {
@@ -35,26 +42,27 @@ $theme-rare: #337ab7;
 }
 
 .icon {
-  border: 1px solid black;
-  height: 54px;
-  margin-top: 5px;
+  height: 55px;
   padding: 2px;
-  width: 54px;
+  width: 55px;
 }
 
 .icon-default {
   @extend .icon;
   background-color: $theme-default;
+  border: 1px solid $theme-default;
 }
 
 .icon-rare {
   @extend .icon;
   background-color: $theme-rare;
+  border: 1px solid $theme-rare;
 }
 
 .icon-uncommon {
   @extend .icon;
   background-color: $theme-uncommon;
+  border: 1px solid $theme-uncommon;
 }
 
 .gender {
@@ -63,6 +71,11 @@ $theme-rare: #337ab7;
   justify-content: center;
   padding-top: 3px;
   width: 75%;
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 .level-breed {
@@ -102,6 +115,12 @@ $theme-rare: #337ab7;
   background-color: rgba(215, 215, 215, 0.2);
 }
 
+.pet-tile-body {
+  display: flex;
+  flex: 1 1 auto;
+  margin-top: 3px;
+}
+
 .pet-tile-column {
   display: flex;
   flex: 1 1 auto;
@@ -125,11 +144,6 @@ $theme-rare: #337ab7;
   align-items: center;
   justify-content: center;
   margin-right: 5px;
-}
-
-.pet-tile-body {
-  display: flex;
-  flex: 1 1 auto;
 }
 
 .pet-tile-container {

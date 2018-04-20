@@ -52,7 +52,7 @@
             </strong>
           </div>
           <div class="gender">
-            <img src="../../../assets/images/pet/{{pet.breed.gender}}.png" style="width:15px;height:15px;">
+            <img src="../../../assets/images/pet/{{pet.breed.gender}}.png">
           </div>
         </div>
 
@@ -63,7 +63,14 @@
 
     </div>
     <mat-grid-tile-footer>
-      <small *ngIf="pet.name !== pet.creatureName"><i>"{{pet.name}}"</i></small>
+      <small *ngIf="pet.name !== pet.creatureName">
+        <strong>"{{pet.name}}"</strong>
+      </small>
+      <div class="footer-details">
+        <button mat-icon-button matTooltip="view details">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
     </mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>
