@@ -32,6 +32,81 @@ export class CharacterService {
   // --------------------------------------------------
 
 
+
+
+  /**
+   *
+   * @returns {Observable<boolean>}
+   */
+  public mergePets(): Observable<boolean> {
+
+    const characterPets: CharacterPet[] = Array.from(this.bnetService.character.pets.collected);
+    const masterPets: Pet[] = Array.from(this.bnetService.pets);
+    this.mergedPets.length = 0;
+
+    for (let i = 0, j = masterPets.length; i < j; i++) {
+      const mergedPet = _.extend(new MergedPet(), masterPets[i]);
+      const matchingPets = _.filter(characterPets, {creatureId: mergedPet.creatureId});
+      if (matchingPets.length) {
+        this.addCollectedPets(matchingPets, mergedPet);
+      } else {
+        this.addUncollectedPet(mergedPet);
+      }
+    }
+    this.mergedPets = _.sortBy(this.mergedPets, ['creatureName']);
+    return Observable.of(true);
+  }
+
+
+
+
+  /**
+   *
+   * @param {CharacterPet[]} matchingPets
+   * @param {MergedPet} mergedPet
+   */
+  private addCollectedPets(matchingPets: CharacterPet[], mergedPet: MergedPet): void {
+    for (let k = 0, l = matchingPets.length; k < l; k++) {
+      const collectedPet = _.clone(_.extend(mergedPet, matchingPets[k]));
+      collectedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${collectedPet.family}.png`;
+      collectedPet.collected = true;
+      collectedPet.duplicate = k > 0;
+      collectedPet.original = k === 0;
+      collectedPet.store = this.getPetStore(collectedPet.creatureId);
+      collectedPet.tcg = this.getPetTcg(collectedPet.creatureId);
+      collectedPet.theme = this.getPetTheme(collectedPet.qualityId);
+      collectedPet.iconClass = `icon-${collectedPet.theme}`;
+      collectedPet.iconUrl = `${environment.blizzardIcon36}${collectedPet.icon}.jpg`;
+      collectedPet.wowHeadUrl = `${environment.wowHeadUrl}${collectedPet.creatureId}`;
+      collectedPet.breed = this.getPetBreeds(collectedPet.stats.breedId);
+      this.mergedPets.push(collectedPet);
+    }
+  }
+
+
+
+
+  /**
+   *
+   * @param {MergedPet} mergedPet
+   */
+  private addUncollectedPet(mergedPet: MergedPet): void {
+    mergedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${mergedPet.family}.png`;
+    mergedPet.collected = false;
+    mergedPet.creatureName = mergedPet.name;
+    mergedPet.store = this.getPetStore(mergedPet.creatureId);
+    mergedPet.tcg = this.getPetTcg(mergedPet.creatureId);
+    mergedPet.theme = this.getPetTheme(mergedPet.qualityId);
+    mergedPet.iconClass = `icon-${mergedPet.theme}`;
+    mergedPet.iconUrl = `${environment.blizzardIcon36}${mergedPet.icon}.jpg`;
+    mergedPet.wowHeadUrl = `${environment.wowHeadUrl}${mergedPet.creatureId}`;
+    mergedPet.breed = this.getPetBreeds(mergedPet.stats.breedId);
+    this.mergedPets.push(mergedPet);
+  }
+
+
+
+
   /**
    *
    * @param {number} id
@@ -144,108 +219,5 @@ export class CharacterService {
     };
     return theme[quality] || 'default';
   }
-
-
-
-
-  /**
-   *
-   * @returns {Observable<boolean>}
-   */
-  public mergePets(): Observable<boolean> {
-
-    let characterPets: CharacterPet[] = Array.from(this.bnetService.character.pets.collected);
-    let masterPets: Pet[] = Array.from(this.bnetService.pets);
-    // let mergedPets: MergedPet[] = [];
-
-    this.mergedPets.length = 0;
-
-    // loop through the master pet list
-    for (let i = 0, j = masterPets.length; i < j; i++) {
-
-      // create a merged pet instance
-      let mergedPet = _.extend(new MergedPet(), masterPets[i]);
-      mergedPet.familyImageUrl = `../../../assets/images/pet/Pet_type_${mergedPet.family}.png`;
-
-      // look for any matching pets in character collection
-      const matchingPets = _.filter(characterPets, {creatureId: mergedPet.creatureId});
-      if (matchingPets.length) {
-        this.addCollectedPets(matchingPets, mergedPet);
-        /*
-                // create a collected pet for each match
-                for (let k = 0, l = matchingPets.length; k < l; k++) {
-                  const collectedPet = _.clone(_.extend(mergedPet, matchingPets[k]));
-                  collectedPet.collected = true;
-                  collectedPet.duplicate = k > 0;
-                  collectedPet.original = k === 0;
-                  collectedPet.store = this.getPetStore(collectedPet.creatureId);
-                  collectedPet.tcg = this.getPetTcg(collectedPet.creatureId);
-                  collectedPet.theme = this.getPetTheme(collectedPet.qualityId);
-                  collectedPet.iconClass = `icon-${collectedPet.theme}`;
-                  collectedPet.iconUrl = `${environment.blizzardIcon36}${collectedPet.icon}.jpg`;
-                  collectedPet.wowHeadUrl = `${environment.wowHeadUrl}${collectedPet.creatureId}`;
-                  collectedPet.breed = this.getPetBreeds(collectedPet.stats.breedId);
-                  mergedPets.push(collectedPet);
-                }
-        */
-      } else {
-        this.addUncollectedPet(mergedPet);
-/*
-        mergedPet.collected = false;
-        mergedPet.creatureName = mergedPet.name;
-        mergedPet.store = this.getPetStore(mergedPet.creatureId);
-        mergedPet.tcg = this.getPetTcg(mergedPet.creatureId);
-        mergedPet.theme = this.getPetTheme(mergedPet.qualityId);
-        mergedPet.iconClass = `icon-${mergedPet.theme}`;
-        mergedPet.iconUrl = `${environment.blizzardIcon36}${mergedPet.icon}.jpg`;
-        mergedPet.wowHeadUrl = `${environment.wowHeadUrl}${mergedPet.creatureId}`;
-        mergedPet.breed = this.getPetBreeds(mergedPet.stats.breedId);
-        mergedPets.push(mergedPet);
-*/
-      }
-    }
-    // this.mergedPets.length = 0;
-    // this.mergedPets = Array.from(mergedPets);
-    this.mergedPets = _.sortBy(this.mergedPets, ['creatureName']);
-    return Observable.of(true);
-  }
-
-
-
-
-  private addCollectedPets(matchingPets: CharacterPet[], mergedPet: MergedPet): void {
-    for (let k = 0, l = matchingPets.length; k < l; k++) {
-      const collectedPet = _.clone(_.extend(mergedPet, matchingPets[k]));
-      collectedPet.collected = true;
-      collectedPet.duplicate = k > 0;
-      collectedPet.original = k === 0;
-      collectedPet.store = this.getPetStore(collectedPet.creatureId);
-      collectedPet.tcg = this.getPetTcg(collectedPet.creatureId);
-      collectedPet.theme = this.getPetTheme(collectedPet.qualityId);
-      collectedPet.iconClass = `icon-${collectedPet.theme}`;
-      collectedPet.iconUrl = `${environment.blizzardIcon36}${collectedPet.icon}.jpg`;
-      collectedPet.wowHeadUrl = `${environment.wowHeadUrl}${collectedPet.creatureId}`;
-      collectedPet.breed = this.getPetBreeds(collectedPet.stats.breedId);
-      this.mergedPets.push(collectedPet);
-    }
-  }
-
-
-
-
-  private addUncollectedPet(mergedPet: MergedPet): void {
-    mergedPet.collected = false;
-    mergedPet.creatureName = mergedPet.name;
-    mergedPet.store = this.getPetStore(mergedPet.creatureId);
-    mergedPet.tcg = this.getPetTcg(mergedPet.creatureId);
-    mergedPet.theme = this.getPetTheme(mergedPet.qualityId);
-    mergedPet.iconClass = `icon-${mergedPet.theme}`;
-    mergedPet.iconUrl = `${environment.blizzardIcon36}${mergedPet.icon}.jpg`;
-    mergedPet.wowHeadUrl = `${environment.wowHeadUrl}${mergedPet.creatureId}`;
-    mergedPet.breed = this.getPetBreeds(mergedPet.stats.breedId);
-    this.mergedPets.push(mergedPet);
-  }
-
-
 
 }
