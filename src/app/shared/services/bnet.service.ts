@@ -2,7 +2,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
-import {Character, Pet, Realm} from '../models';
+import {Character, MergedPet, Pet, PetSpecies, Realm} from '../models';
 import {environment} from '../../../environments/environment';
 import {Router} from "@angular/router";
 
@@ -56,6 +56,21 @@ export class BnetService {
 
   /**
    *
+   * @param {MergedPet} pet
+   * @returns {Observable<any>}
+   */
+  public getSpecies(pet: MergedPet): Observable<any> {
+    const url = `https://${this.character.region}.${this.serviceUrl}pet/species/${pet.stats.speciesId}?&apikey=${this.serviceKey}`;
+    return <Observable<boolean>>this.http
+      .get(url)
+      .map((response: any) => response);
+  }
+
+
+
+
+  /**
+   *
    * @param region
    * @param {string} character
    * @param {string} realm
@@ -65,7 +80,10 @@ export class BnetService {
     const url = `https://${region}.${this.serviceUrl}character/${realm}/${character}?fields=pets,mounts&apikey=${this.serviceKey}`;
     return <Observable<boolean>>this.http
       .get(url)
-      .do((response: Character) => this.character = response)
+      .do((response: Character) => {
+        this.character = response;
+        this.character.region = region;
+      })
       .catch((error: HttpErrorResponse) => this.handleError(error, this.SOURCE_CHARACTER));
   }
 
@@ -92,7 +110,10 @@ export class BnetService {
     const url = `https://${region}.${this.serviceUrl}pet/?fields=species&apikey=${this.serviceKey}`;
     return <Observable<boolean>>this.http
       .get(url)
-      .do((response: any) => this.pets = response.pets);
+      .do((response: any) => {
+        console.dir(response.pets);
+        this.pets = response.pets;
+      });
   }
 
 

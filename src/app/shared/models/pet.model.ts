@@ -11,9 +11,35 @@ export class Pet {
   weakAgainst: string[];
 }
 
+export class PetAbility {
+  cooldown: number;
+  hideHints: boolean;
+  icon: string;
+  id: number;
+  isPassive: boolean;
+  name: string;
+  order: number;
+  petTypeId: number;
+  requiredLevel: number;
+  rounds: number;
+  slot: number;
+}
+
 export class PetBreed {
   breed: string;
   gender: string;
+}
+
+export class PetSpecies {
+  abilities: PetAbility[];
+  canBattle: boolean;
+  creatureId: number;
+  description: string;
+  icon: string;
+  name: string;
+  petTypeId: number;
+  speciesId: number;
+  source: string;
 }
 
 export class PetStats {

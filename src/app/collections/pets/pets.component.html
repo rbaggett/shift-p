@@ -13,20 +13,26 @@
 
 <br>
 <mat-grid-list cols="5" rowHeight="140px" gutterSize="15px" class="pet-grid" (mousewheel)="mouseScroll($event)">
-  <mat-grid-tile class="pet-tile" *ngFor="let pet of pagePets">
+  <mat-grid-tile class="pet-tile" *ngFor="let pet of pagePets" (click)="openDialog(pet)">
+
+    <!-- HEADER -->
     <mat-grid-tile-header class="mat-grid-tile-header header-{{pet.theme}}">
       <span>{{pet.creatureName}}</span>
     </mat-grid-tile-header>
-    <div class="pet-tile-container">
 
+    <!-- BODY -->
+    <div class="pet-tile-container">
       <div class="pet-tile-body">
+
+        <!-- ICON COLUMN -->
         <div class="pet-tile-column-icon">
-          <a [href]="pet.wowHeadUrl" target="_blank">
-            <img [class]="pet.iconClass" [src]="pet.iconUrl" matTooltip="view on wowhead.com"
-                 onError="this.src='../../../assets/images/pet/image_not_found.png';">
-          </a>
+          <!--<a [href]="pet.wowHeadUrl" target="_blank">-->
+          <img [class]="pet.iconClass" [src]="pet.iconUrl"
+               onError="this.src='../../../assets/images/pet/image_not_found.png';">
+          <!--</a>-->
         </div>
 
+        <!-- STATS COLUMN -->
         <div class="pet-tile-column-stats">
           <div>
             <div class="battle-stat">
@@ -44,6 +50,7 @@
           </div>
         </div>
 
+        <!-- BREED COLUMN -->
         <div class="pet-tile-column-breed">
           <div class="level-breed">
             <strong>
@@ -56,21 +63,27 @@
           </div>
         </div>
 
-        <div class="pet-family-image">
-          <img [src]="pet.familyImageUrl">
-        </div>
       </div>
-
     </div>
+
+    <!-- BACKGROUND IMAGE -->
+    <div class="pet-family-image">
+      <img [src]="pet.familyImageUrl">
+    </div>
+
+    <!-- FOOTER -->
     <mat-grid-tile-footer>
       <small *ngIf="pet.name !== pet.creatureName">
         <strong>"{{pet.name}}"</strong>
       </small>
-      <div class="footer-details">
-        <button mat-icon-button matTooltip="view details">
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
+      <!--
+            <div class="footer-details">
+              <button mat-icon-button matTooltip="view details" (click)="openDialog(pet)">
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
+      -->
     </mat-grid-tile-footer>
+
   </mat-grid-tile>
 </mat-grid-list>

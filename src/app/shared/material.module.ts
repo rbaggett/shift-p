@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
-  MatButtonModule,
+  MatButtonModule, MatDialogModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -18,6 +18,7 @@ import {
   imports: [
     MatAutocompleteModule,
     MatButtonModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
@@ -31,6 +32,7 @@ import {
   exports: [
     MatAutocompleteModule,
     MatButtonModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,

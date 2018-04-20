@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import {MatDialog} from "@angular/material";
 
 import * as _ from 'lodash';
 
 import {CharacterService} from "../../shared/services";
+import {DetailsComponent} from "./details/details.component";
 import {MergedPet} from "../../shared/models";
 
 @Component({
@@ -24,6 +26,7 @@ export class PetsComponent implements OnInit {
   // ---------------------------------------------------
 
   constructor(
+    private dialog: MatDialog,
     private characterService: CharacterService
   ) {
   }
@@ -84,5 +87,17 @@ export class PetsComponent implements OnInit {
     (event.wheelDelta > 0) ? this.backTen() : this.forwardTen();
   }
 
+
+
+  public openDialog(pet: MergedPet): void {
+    let dialogRef = this.dialog.open(DetailsComponent, {
+      // width: '250px',
+      data: pet
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
 }

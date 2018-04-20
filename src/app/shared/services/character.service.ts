@@ -39,7 +39,6 @@ export class CharacterService {
    * @returns {Observable<boolean>}
    */
   public mergePets(): Observable<boolean> {
-
     const characterPets: CharacterPet[] = Array.from(this.bnetService.character.pets.collected);
     const masterPets: Pet[] = Array.from(this.bnetService.pets);
     this.mergedPets.length = 0;

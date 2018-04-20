@@ -13,6 +13,7 @@ export class Character {
   pets: CharacterPets;
   race: number;
   realm: string;
+  region: string;
   thumbnail: string;
   totalHonorableKills: number;
 }
