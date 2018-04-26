@@ -27,7 +27,9 @@
         <!-- ICON COLUMN -->
         <div class="pet-tile-column-icon">
           <!--<a [href]="pet.wowHeadUrl" target="_blank">-->
-          <img [class]="pet.iconClass" [src]="pet.iconUrl"
+          <!--[src]="pet.iconUrl"-->
+          <img [class]="pet.iconClass"
+               src="../../../assets/images/pet/icons/{{pet.icon}}.jpg"
                onError="this.src='../../../assets/images/pet/image_not_found.png';">
           <!--</a>-->
         </div>

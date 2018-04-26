@@ -61,9 +61,7 @@ export class BnetService {
    */
   public getSpecies(pet: MergedPet): Observable<any> {
     const url = `https://${this.character.region}.${this.serviceUrl}pet/species/${pet.stats.speciesId}?&apikey=${this.serviceKey}`;
-    return <Observable<boolean>>this.http
-      .get(url)
-      .map((response: any) => response);
+    return <Observable<boolean>>this.http.get(url);
   }
 
 
