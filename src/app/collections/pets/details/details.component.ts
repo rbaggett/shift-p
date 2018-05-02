@@ -11,6 +11,11 @@ export class DetailsComponent implements OnInit {
 
 
 
+
+  // ---------------------------------------------------
+  // INITIALIZE
+  // ---------------------------------------------------
+
   constructor(
     private bnetService: BnetService,
     private dialogRef: MatDialogRef<DetailsComponent>,
@@ -21,10 +26,7 @@ export class DetailsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.bnetService.getSpecies(this.data)
-      .subscribe(
-        (response: any) => console.dir(response)
-      )
+    this.loadSpecies();
   }
 
 
@@ -32,6 +34,25 @@ export class DetailsComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+
+
+
+  // ---------------------------------------------------
+  // FUNCTIONS
+  // ---------------------------------------------------
+
+
+
+  /**
+   *
+   */
+  private loadSpecies(): void {
+    if (this.data.canBattle) {
+      this.bnetService.getSpecies(this.data)
+        .subscribe((response: any) => console.dir(response))
+    }
   }
 
 }

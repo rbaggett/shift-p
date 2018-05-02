@@ -89,11 +89,13 @@ export class PetsComponent implements OnInit {
 
 
 
+
+  /**
+   *
+   * @param {MergedPet} pet
+   */
   public openDialog(pet: MergedPet): void {
-    let dialogRef = this.dialog.open(DetailsComponent, {
-      // width: '250px',
-      data: pet
-    });
+    let dialogRef = this.dialog.open(DetailsComponent, {data: pet});
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

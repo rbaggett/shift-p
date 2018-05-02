@@ -12,7 +12,7 @@
 </div>
 
 <br>
-<mat-grid-list cols="5" rowHeight="140px" gutterSize="15px" class="pet-grid" (mousewheel)="mouseScroll($event)">
+<mat-grid-list cols="5" rowHeight="140px" gutterSize="5px" class="pet-grid" (mousewheel)="mouseScroll($event)">
   <mat-grid-tile class="pet-tile" *ngFor="let pet of pagePets" (click)="openDialog(pet)">
 
     <!-- HEADER -->
@@ -26,17 +26,14 @@
 
         <!-- ICON COLUMN -->
         <div class="pet-tile-column-icon">
-          <!--<a [href]="pet.wowHeadUrl" target="_blank">-->
-          <!--[src]="pet.iconUrl"-->
           <img [class]="pet.iconClass"
                src="../../../assets/images/pet/icons/{{pet.icon}}.jpg"
                onError="this.src='../../../assets/images/pet/image_not_found.png';">
-          <!--</a>-->
         </div>
 
         <!-- STATS COLUMN -->
         <div class="pet-tile-column-stats">
-          <div>
+          <div *ngIf="pet.canBattle">
             <div class="battle-stat">
               <span><img class="pet-stat-image" src="../../../assets/images/pet/PetBattle_Health.png"></span>
               <span>&nbsp;{{pet.stats.health}}</span>
@@ -56,7 +53,7 @@
         <div class="pet-tile-column-breed">
           <div class="level-breed">
             <strong>
-              <span>{{pet.stats.level}}</span>
+              <span *ngIf="pet.canBattle">{{pet.stats.level}}</span>
               <span>{{pet.breed.breed}}</span>
             </strong>
           </div>
